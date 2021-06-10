@@ -1,170 +1,130 @@
-let hasValue = true;
-
-let count: number = 10;
+var hasValue = true;
+var count = 10;
 // numberは少数や、マイナスの値も使うことが可能
-let float: number = 3.14;
-let negative: number = -0.12;
-
-let single: string = 'hello';
-let double: string = "hello";
-let back: string = `hello`;
-
+var float = 3.14;
+var negative = -0.12;
+var single = 'hello';
+var double = "hello";
+var back = "hello";
 // 型注釈と型推論
 // 型解釈とは上記のように値の後に型の名前を入れること
 // 型推論とは型解釈がなくとも型を勝手に予想してエラーを出してくれること
 // 基本的には下記の型推論を使用してわざわざ型注釈は使用しない
-
-let checkValue = false;
+var checkValue = false;
 // checkValue = 10; これはエラーになる
-
 // 型推論をしない場合とは？
 // 下記のように変数の初期化を行わない場合　※ただ何も指示しないとなんでも入ってしまう
-let any;
+var any;
 any = 2;
 any = "string";
-
 // オブジェクトに型を定義する
 // 基本は推論型で定義する為、わざわざ定義しないし、オブジェクトを: objectで定義もしない
-const person = {
-  name: {
-    first: 'Jack',
-    last: 'Smith',
-  },
-  age: 21,
-}
-
+var person = {
+    name: {
+        first: 'Jack',
+        last: 'Smith'
+    },
+    age: 21
+};
 // 配列の場合
-const fruits: string[] = ['Apple', 'Banana', 'Grape']
-
+var fruits = ['Apple', 'Banana', 'Grape'];
 // 文字列と数字を入れたい場合はanyを使う
-const menu: any[] = ["Apple", "Corn", "Ace", 3]
-
+var menu = ["Apple", "Corn", "Ace", 3];
 // 推論型の場合
-const names = ["Yamada", "Teru", 3]
-
+var names = ["Yamada", "Teru", 3];
 // 配列に入る型を順番通り決める為に使用するタプル
-const book: [string, number, boolean] = ['business', 1500, false];
+var book = ['business', 1500, false];
 // pushした場合は値は入るようになる
 book.push(21);
-
 // enumについて(列挙型)
 // 特定のまとまったグループを受け入れる
 // enumに関しては値は大文字、変数名はパスカルケース
-enum CoffeeSize {
-  SHORT,
-  TALL,
-  GRANDE,
-  VENTI
-}
-
-const coffee = {
-  hot: true,
-  size: CoffeeSize.TALL
-}
+var CoffeeSize;
+(function (CoffeeSize) {
+    CoffeeSize[CoffeeSize["SHORT"] = 0] = "SHORT";
+    CoffeeSize[CoffeeSize["TALL"] = 1] = "TALL";
+    CoffeeSize[CoffeeSize["GRANDE"] = 2] = "GRANDE";
+    CoffeeSize[CoffeeSize["VENTI"] = 3] = "VENTI";
+})(CoffeeSize || (CoffeeSize = {}));
+var coffee = {
+    hot: true,
+    size: CoffeeSize.TALL
+};
 coffee.size = CoffeeSize.SHORT;
-
 // any型について
-let anything: any = true;
+var anything = true;
 anything = 'hello';
-anything = ['hello', 33, true]
-anything = {}
+anything = ['hello', 33, true];
+anything = {};
 anything.fji = "fji";
-
 // anyが付くと全てJavascriptに変更される型がなんでもよくなり、代入もされる
 // Javascriptから移行する際によく、使用する、基本的にはあまり使用してはいけないとわかった上で使用すること
-let banana = 'banana';
+var banana = 'banana';
 banana = anything;
-
 // ユニオン型
 // | →　or演算子のような役割
-let unionType: number | string = 10;
+var unionType = 10;
 // unionType.toUpperCase();
 // 上記はエラーになる
 unionType = "hello";
 unionType.toUpperCase();
-
 // 配列の場合
-let unionTypes: (number | string)[] = [21, 'hello']
-
+var unionTypes = [21, 'hello'];
 // リテラル型(完全に決まった値だけを使用する)
 // constで定義すると推論型でリテラル型でタイプが完全に一致するものしか出来なくなる。
-const apple: 'apple' = 'apple';
-
+var apple = 'apple';
 // enumのように作成する
-let clothSize: 'small' | 'medium' | 'large' = 'large'
-
+var clothSize = 'large';
 // enumとの違いはオブジェクトではないため、指定が効かなくなる
-const cloth: {
-  color: string;
-  size: 'small' | 'medium' | 'large'
-} = {
-  color: "white",
-  size: 'medium'
-}
-
-// エイリアスについて
-// 上記のリテラル型でenumを表現する場合など、種類を描きすぎると長くなり見にくくなるので、下記のエイリアスでまとめて定義するイメージ
-type Colors = "red" | "blue" | "yellow"
-const colorType: {
-  color: Colors;
-} = {
-  color: "yellow",
-}
-
+var cloth = {
+    color: "white",
+    size: 'medium'
+};
+var colorType = {
+    color: "yellow"
+};
 // 関数に型をつける
 // 型注釈で記載が必要、型推論にする場合、戻り値は型推論で問題ないが、引数に関しては型注釈が必要になり、型注釈がない場合はanyになりなんでもよくなる
 // 関数の戻り値の型が決まっている場合は、型注釈で書いた方がわかりやすいコードになる
-function add(num1: number, num2: number): number {
-  return num1 + num2
+function add(num1, num2) {
+    return num1 + num2;
 }
-
 // void型　undefined型
 // voidは何も返さない時に使用する
-function sayHello(): void {
-  // これはundefined型を返す
-  // ただ型をundefined型を指定してはいけない、Tsではundefinedを返すことを許していない！
-  // undefined型を使える場合は、関数でreturn;を書く場合は書けるが基本的にundefinedを使用せずに、voidを使用すること！
-  console.log("Hello!");
+function sayHello() {
+    // これはundefined型を返す
+    // ただ型をundefined型を指定してはいけない、Tsではundefinedを返すことを許していない！
+    // undefined型を使える場合は、関数でreturn;を書く場合は書けるが基本的にundefinedを使用せずに、voidを使用すること！
+    console.log("Hello!");
 }
-
-const anotherAdd: (n1: number, n2: number) => number = add;
+var anotherAdd = add;
 // 上記の書き方だとどちらも型をしてしているがどちらか一方に型を指定すれば問題ない
-
 // アロー関数で記載する時の型のつけ方
-const doubleNumber = (num: number): number => num * 2;
-
+var doubleNumber = function (num) { return num * 2; };
 // コールバック関数に型をつける時のやり方
-function doubleAndHandle(num: number, cb: (num: number) => number): void {
-  const doubleNum = cb(num * 2);
-  doubleNum.toString
-  console.log(num * 2);
+function doubleAndHandle(num, cb) {
+    var doubleNum = cb(num * 2);
+    doubleNum.toString;
+    console.log(num * 2);
 }
-
-doubleAndHandle(21, doubleNum => {
-  return doubleNum
-})
-
+doubleAndHandle(21, function (doubleNum) {
+    return doubleNum;
+});
 // unknown型
-let unknownInput: unknown;
-let anyInput: any;
-let text: string;
+var unknownInput;
+var anyInput;
+var text;
 unknownInput = 'hello';
 unknownInput = 21;
 unknownInput = false;
-
 // 下記がanyとは違いエラーになる
 // text = unknownInput;
-
 //下記のように型をif文などで変更する際に使用する
-if(typeof unknownInput === "string") {
-  text = unknownInput;
+if (typeof unknownInput === "string") {
+    text = unknownInput;
 }
-
 // never型について
-// 何も返さない時に使用する！
-function error(message: string): never {
-  throw new Error(message);
-  // while( true ) {
-  // }
+function error(message) {
+    throw new Error(message);
 }
 console.log(error('This is an error'));
